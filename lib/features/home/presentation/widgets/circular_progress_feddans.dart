@@ -1,4 +1,4 @@
-import 'dart:convert';
+import 'dart:typed_data';
 import 'dart:ui';
 
 import 'package:dakahlia_task/core/utils/colors.dart';
@@ -27,7 +27,6 @@ class _CircularProgressFeddansState extends State<CircularProgressFeddans>
   late final Animation<double> _animation;
   @override
   void initState() {
-    debugPrint('zaza image: ${widget.image}');
     super.initState();
     _controller = AnimationController(
       vsync: this,
@@ -57,7 +56,7 @@ class _CircularProgressFeddansState extends State<CircularProgressFeddans>
         Padding(
           padding: const EdgeInsets.only(top: 20),
           child: Image.memory(
-            base64Decode(widget.image.join()),
+            Uint8List.fromList(widget.image.cast<int>()),
             errorBuilder: (context, error, stackTrace) {
               return const Text('img null');
             },

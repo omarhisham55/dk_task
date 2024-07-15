@@ -1,3 +1,6 @@
+import 'package:dakahlia_task/config/dpi/dpi_controller.dart';
+import 'package:dakahlia_task/config/routes/routes.dart';
+import 'package:dakahlia_task/config/sharedPrefs/shared_prefs.dart';
 import 'package:dakahlia_task/features/authentication/presentation/cubit/authentication_cubit.dart';
 import 'package:dakahlia_task/features/home/domain/entities/product.dart';
 import 'package:dakahlia_task/features/home/domain/usecases/get_products_usecase.dart';
@@ -69,8 +72,6 @@ class HomeCubit extends Cubit<HomeState> {
     emit(GetUserProductsLoadingState());
     final response = await getUserProductsUsecase(
         AuthenticationCubit.get(context).user!.id!);
-    debugPrint(
-        'AuthenticationCubit.get(context).user!.id!: ${AuthenticationCubit.get(context).user!.id!}');
     emit(
       response.fold(
         (l) => GetUserProductsErrorState(error: l.props[0].toString()),
@@ -85,6 +86,16 @@ class HomeCubit extends Cubit<HomeState> {
           return GetUserProductsSuccessState();
         },
       ),
+    );
+  }
+
+  void logout(BuildContext context) {
+    userProducts = [];
+    DpiController.getIt<SharedPrefsController>().delete('userId');
+    Navigator.pushNamedAndRemoveUntil(
+      context,
+      Routes.auth,
+      (route) => false,
     );
   }
 }

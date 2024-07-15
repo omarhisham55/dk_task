@@ -14,6 +14,17 @@ class ProductModel extends Product {
         name: json['name'],
         size: json['size'],
         feddans: json['feddans'],
-        img: json['img'],
+        img: ImgModel.fromJson(json['img'] ?? {}),
+      );
+}
+
+class ImgModel {
+  final String? type;
+  final List<dynamic>? data;
+
+  ImgModel({required this.type, required this.data});
+  factory ImgModel.fromJson(Map<String, dynamic> json) => ImgModel(
+        type: json['type'],
+        data: json['data'],
       );
 }

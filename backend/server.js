@@ -12,11 +12,16 @@ app.use(express.json());
 app.use(cors());
 
 const pool = new Pool({
-  host: process.env.DB_HOST,
-  port: process.env.DB_PORT,
-  database: process.env.DB_NAME,
-  user: process.env.DB_USER,
-  password: process.env.DB_PASSWORD,
+  host: "localhost",
+  port: "5432",
+  database: "dakahlia_flutter_db",
+  user: "postgres",
+  password: "admin",
+  // host: process.env.DB_HOST,
+  // port: process.env.DB_PORT,
+  // database: process.env.DB_NAME,
+  // user: process.env.DB_USER,
+  // password: process.env.DB_PASSWORD,
 });
 
 app.get("/products", async (req, res) => {
@@ -24,6 +29,7 @@ app.get("/products", async (req, res) => {
     const result = await pool.query("SELECT * FROM products");
     res.json(result.rows);
   } catch (err) {
+    console.error(res.statusCode);
     res.status(500).json({ error: "Internal server error" });
   }
 });
@@ -47,6 +53,7 @@ async function saveUser(username, password) {
       "INSERT INTO users (id, username, password) VALUES ($1, $2, $3) RETURNING *";
     const values = [id, username, hashedPassword];
     const result = await pool.query(query, values);
+    console.log(result.rows);
     addDummyDataOnSave(result.rows[0].id);
     return result.rows[0]; // Return the inserted user
   } catch (error) {
@@ -90,6 +97,7 @@ app.post("/saveUser", async (req, res) => {
     const newUser = await saveUser(username, password);
     res.json(newUser);
   } catch (err) {
+    console.log(res.statusCode, err);
     res.status(500).json({ error: "Failed to save user" });
   }
 });

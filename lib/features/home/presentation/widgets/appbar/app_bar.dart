@@ -1,10 +1,8 @@
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
-import 'package:dakahlia_task/config/dpi/dpi_controller.dart';
-import 'package:dakahlia_task/config/routes/routes.dart';
-import 'package:dakahlia_task/config/sharedPrefs/shared_prefs.dart';
 import 'package:dakahlia_task/core/components/horizontal_divider.dart';
 import 'package:dakahlia_task/core/utils/colors.dart';
 import 'package:dakahlia_task/features/authentication/presentation/cubit/authentication_cubit.dart';
+import 'package:dakahlia_task/features/home/presentation/cubit/home_cubit.dart';
 import 'package:dakahlia_task/features/home/presentation/widgets/appbar/search_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -74,14 +72,7 @@ AppBar dashBoardAppBar(BuildContext context) => AppBar(
           },
         ),
         IconButton(
-          onPressed: () {
-            DpiController.getIt<SharedPrefsController>().delete('userId');
-            Navigator.pushNamedAndRemoveUntil(
-              context,
-              Routes.auth,
-              (route) => false,
-            );
-          },
+          onPressed: () => HomeCubit.get(context).logout(context),
           icon: const Icon(
             Icons.logout,
             color: Colors.red,

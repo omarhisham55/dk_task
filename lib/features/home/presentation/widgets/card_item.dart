@@ -52,7 +52,7 @@ class CardItem extends StatelessWidget {
                   ),
                   Expanded(
                     child: CircularProgressFeddans(
-                      image: product.img?['data'],
+                      image: product.img.data ?? [],
                       max: 600,
                       value: product.feddans.toDouble(),
                     ),
